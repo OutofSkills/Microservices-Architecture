@@ -13,7 +13,24 @@
         }
       ],
       "UpstreamPathTemplate": "/gateway/products",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+      "UpstreamHttpMethod": [ "POST", "PUT" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/products",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7221
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "productcaching"
+      },
+      "UpstreamPathTemplate": "/gateway/products",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Key": "Product"
     },
     {
       "DownstreamPathTemplate": "/api/customers",
@@ -25,7 +42,34 @@
         }
       ],
       "UpstreamPathTemplate": "/gateway/customers",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+      "UpstreamHttpMethod": [ "POST", "PUT" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/customers",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7097
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "customercaching"
+      },
+      "UpstreamPathTemplate": "/gateway/customers",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Key": "Customer"
+    }
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "Customer",
+        "Product"
+      ],
+      "UpstreamPathTemplate": "/gateway/customers-and-products",
+      "Aggregator": "MyAggregator"
     }
   ]
 }
